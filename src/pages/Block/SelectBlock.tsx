@@ -101,15 +101,22 @@ const ReadDataBlock: React.FC = () => {
 
   const decrypt = (data: string) => {
     if (!data) return "";
-    const key = "My32charPasswordAndInitVectorStr";
+    // const key = "My32charPasswordAndInitVectorStr";
+    const key = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
     const iv = "My32charPassword";
-    const cipher = CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(key), {
-      iv: CryptoJS.enc.Utf8.parse(iv),
-      mode: CryptoJS.mode.CBC,
-      format: CryptoJS.format.Hex,
-    });
-    const decrypted = cipher + "";
-    return decrypted;
+
+    const cipher = CryptoJS.AES.decrypt(
+      CryptoJS.enc.Hex.parse(data).toString(CryptoJS.enc.Base64),
+      CryptoJS.enc.Utf8.parse(key),
+      {
+        iv: CryptoJS.enc.Utf8.parse(iv),
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7,
+      }
+    );
+    console.log(cipher);
+    const decrypted = cipher.toString(CryptoJS.enc.Utf8);
+    return JSON.parse(decrypted);
   };
 
   useEffect(() => {

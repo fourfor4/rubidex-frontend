@@ -8,12 +8,12 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "antd": "^4.21.3",
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
+    "fs": "^0.0.1-security",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-drag-listview": "^0.2.1",
@@ -32,7 +32,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set HTTPS=true && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -57,9 +57,20 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
+    "@types/node": "^18.7.23",
     "@types/uuid": "^8.3.4",
+    "assert": "^2.0.0",
     "autoprefixer": "^10.4.7",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
     "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.4"
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "tailwindcss": "^3.1.4",
+    "url": "^0.11.0"
   }
 }

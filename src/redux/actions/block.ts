@@ -6,7 +6,7 @@ export const selectBlock = (payload: IBlockFields) => async (dispatch: any) => {
   const { blockname, field, value, enc, currentPage, pageLimit } = payload;
   dispatch(SELECT_BLOCK.request(blockname));
   try {
-    const { data } = await Api.selectBlock(
+    const data = await Api.selectBlock(
       blockname,
       field,
       value,
@@ -14,10 +14,10 @@ export const selectBlock = (payload: IBlockFields) => async (dispatch: any) => {
       currentPage,
       pageLimit
     );
-    console.log(data);
-    dispatch(SELECT_BLOCK.success(data.response.blocks));
+    console.log("select block", data);
+    // dispatch(SELECT_BLOCK.success(data.response.blocks));
   } catch (error: any) {
-    console.log(error);
+    console.log("select block error", error);
     dispatch(SELECT_BLOCK.failure);
   }
 };

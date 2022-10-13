@@ -1,16 +1,25 @@
 import axios, { AxiosResponse } from "axios";
 import { IBlocksetFields } from "../interfaces";
-
+import https from "https";
+import * as fs from "fs";
+// const fs = require("fs");
 // const serverUrl = "http://Rubithree.Rubidex.co:8080";
 // const serverUrl = "http://rubione.penteon.co:8080";
 // const serverUrl = "http://18.221.6.110:8080";
 // const serverUrl = "http://do.dev.nodered.penteon.co:1880";
-const serverUrl = "http://rubitwo.rubidex.co:8080";
+// const serverUrl = "http://rubitwo.rubidex.co:8080";
+const serverUrl = "https://rubitwo.rubidex.co:8081";
 
 const v1BaseUrl = `${serverUrl}/api/v1`;
 const v2BaseUrl = `${serverUrl}/api/v2`;
 const axiosV1Instance = axios.create({ baseURL: v1BaseUrl });
-const axiosV2Instance = axios.create({ baseURL: v2BaseUrl });
+const axiosV2Instance = axios.create({
+  baseURL: v2BaseUrl,
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false,
+    cert: fs.readFileSync("./localhost.cert.pem"),
+  }),
+});
 
 const login = (name: string, password: string) => {
   return axiosV1Instance.get(
@@ -114,9 +123,25 @@ const selectBlock = (
   currentPage?: number,
   pageLimit?: number
 ) => {
+  // const url =
+  //   v2BaseUrl +
+  //   `/block/select?access_token=${"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"}&name=${blockname}&enc=${enc}&sort=${field}&where=${value}&pagenum=${currentPage}&pagesize=${pageLimit}`;
+  // return fetch(url, {
+  //   method: "GET",
+  //   mode: "no-cors",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
+
   const token = window.localStorage.getItem("token");
   return axiosV2Instance.get(
     `/block/select?access_token=${"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"}&name=${blockname}&enc=${enc}&sort=${field}&where=${value}&pagenum=${currentPage}&pagesize=${pageLimit}`
+    // {
+    //   httpsAgent: new https.Agent({
+    //     rejectUnauthorized: false,
+    //   }),
+    // }
   );
 };
 
@@ -126,12 +151,9 @@ const selectFromDB = (
   currentPage: number,
   pageLimit: number
 ) => {
-  return axios.post(`http://localhost:8080/api/address/select`, {
-    field,
-    value,
-    currentPage,
-    pageLimit,
-  });
+  return axios.get(
+    `https://rubidex-backend.herokuapp.com/api/address/select/${field}/${value}/${currentPage}/${pageLimit}`
+  );
 };
 
 const insertData = (blockname: string, data: string) => {
